@@ -1,6 +1,7 @@
 package com.project.eCommerce.permission.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.eCommerce.product.model.Product;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,10 +12,12 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User implements Serializable {
     private static final long serialVersionUID=1L;
+
     @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank(message = "Please enter your FirstName.")
     private String firstName;
@@ -42,6 +45,10 @@ public class User implements Serializable {
     private List<Role> role;
 //    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 //    private Customer customer;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Product> products;
 
     public int getId() {
         return id;
@@ -106,6 +113,13 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 //    public Customer getCustomer() {
 //        return customer;
 //    }
@@ -113,4 +127,18 @@ public class User implements Serializable {
 //    public void setCustomer(Customer customer) {
 //        this.customer = customer;
 //    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", gender='" + gender + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

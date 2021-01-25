@@ -1,23 +1,30 @@
 package com.project.eCommerce.product.model;
 
-import com.sun.xml.internal.ws.developer.Serialization;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.eCommerce.permission.model.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
+@Table(name = "products")
 public class Product implements Serializable {
     private static final long serialVersionUID=1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String description;
-    private String image;
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<FileImage> images;
     private double price;
+    private int stock;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
     public int getId() {
         return id;
@@ -43,12 +50,12 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public List<FileImage> getImage() {
+        return images;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(List<FileImage> images) {
+        this.images = images;
     }
 
     public double getPrice() {
@@ -59,14 +66,31 @@ public class Product implements Serializable {
         this.price = price;
     }
 
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", image='" + image + '\'' +
+                ", image='" + images + '\'' +
                 ", price=" + price +
+                ", stock=" + stock +
                 '}';
     }
 }

@@ -1,16 +1,23 @@
 package com.project.eCommerce.permission.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class Role {
+@Table(name = "roles")
+public class Role implements Serializable {
+    private static final long serialVersionUID=1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String authority;
+
     @ManyToMany(mappedBy = "role", fetch = FetchType.EAGER)
-    private Set<User> user;
+    private Set<User> users;
 
     public Role(){}
 
@@ -31,11 +38,11 @@ public class Role {
     }
 
     public Set<User> getUser() {
-        return user;
+        return users;
     }
 
-    public void setUser(Set<User> user) {
-        this.user = user;
+    public void setUser(Set<User> users) {
+        this.users = users;
     }
 }
 
