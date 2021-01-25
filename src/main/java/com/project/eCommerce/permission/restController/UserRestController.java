@@ -6,7 +6,7 @@ import com.project.eCommerce.jwtUtil.JwtUtil;
 import com.project.eCommerce.permission.model.ChangePassword;
 import com.project.eCommerce.permission.model.User;
 import com.project.eCommerce.permission.repository.UserRepository;
-import com.project.eCommerce.permission.service.user.UserService;
+import com.project.eCommerce.permission.service.UserService;
 import com.project.eCommerce.security.CustomUserServiceDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +20,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
 import java.util.List;
 
 
@@ -42,10 +40,11 @@ public class UserRestController {
     @Autowired
     private UserRepository userRepository;
 
+
     Logger loggerFactory = LoggerFactory.getLogger( UserRestController.class );
 
-    @PostMapping(value = "/register")
-    public void save(@RequestBody User user){
+    @PostMapping(value = "/user/register")
+    public void userAccount(@RequestBody User user){
         userService.save(user);
     }
 
@@ -72,12 +71,12 @@ public class UserRestController {
     public List<User> fetchUser(){
         return userService.getUser();
     }
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/account/findById/{id}")
     public User getUserDetails(@PathVariable int id){
         return userService.findById(id);
     }
 
-    @PutMapping(value = "user/update/{id}")
+    @PutMapping(value = "/account/update/findById/{id}")
     public void update(@PathVariable int id, @RequestBody User user){
         User updateUser = userService.findById(id);
         updateUser.setEmail(user.getEmail());
@@ -87,12 +86,12 @@ public class UserRestController {
         updateUser.setGender(user.getGender());
         userService.update(updateUser);
     }
-    @DeleteMapping(value = "account/delete/{id}")
+    @DeleteMapping(value = "/account/delete/findById/{id}")
     public void delete(@PathVariable int id){
         User user = userService.findById(id);
         userService.delete(user);
     }
-    @RequestMapping(value = "/change/password",
+    @RequestMapping(value = "/account/change/password",
                     produces = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.POST)
     public void changePassword(@RequestBody ChangePassword changePassword){

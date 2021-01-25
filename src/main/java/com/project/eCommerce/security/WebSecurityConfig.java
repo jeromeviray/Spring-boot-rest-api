@@ -1,5 +1,6 @@
 package com.project.eCommerce.security;
 
+import com.project.eCommerce.common.ConstantConfig;
 import com.project.eCommerce.jwtUtil.JwtUtil;
 import com.project.eCommerce.jwtUtil.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
     private final String[] ENDPOINT = {
-                                "/api/v1/user/authenticate",
-                                "/api/v1/user/register",
-                                "/api/v1/user/fetch"
-                            };
+            ConstantConfig.AUTHENTICATE,
+            ConstantConfig.USER+ConstantConfig.REGISTRATION,
+//                                "/api/v1/product/create",
+                                "/api/v1/product/",
+                                "/api/v1/product/findById/**",
+                                "/api/v1/product/delete/findById/**"
+                                };
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -57,21 +61,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors()
             .and()
             .csrf().disable()
-            .authorizeRequests().antMatchers( "/api/v1/user/authenticate",
-                                                    "/api/v1/user/register",
-                                                    "/api/v1/user/fetch",
-                                                    "/api/v1/user/change/password").permitAll()
-            .anyRequest().authenticated()
+            .authorizeRequests().antMatchers( ENDPOINT ).permitAll()
+                .antMatchers("/api/v1/product/create", "api/v1/product").hasRole("SELLER")
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
             http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
-//    @Bean
-//    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer() {
-//
-//        return factory -> factory.setContextPath("/api/v1");
-//    }
+
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {

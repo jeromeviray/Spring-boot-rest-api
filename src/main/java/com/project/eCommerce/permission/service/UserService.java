@@ -1,4 +1,4 @@
-package com.project.eCommerce.permission.service.user;
+package com.project.eCommerce.permission.service;
 
 import com.project.eCommerce.permission.model.User;
 

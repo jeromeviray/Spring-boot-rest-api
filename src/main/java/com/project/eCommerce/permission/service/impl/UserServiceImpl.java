@@ -1,10 +1,10 @@
-package com.project.eCommerce.permission.service.user.impl;
+package com.project.eCommerce.permission.service.impl;
 
 import com.project.eCommerce.permission.model.Role;
 import com.project.eCommerce.permission.model.User;
 import com.project.eCommerce.permission.repository.RoleRepository;
 import com.project.eCommerce.permission.repository.UserRepository;
-import com.project.eCommerce.permission.service.user.UserService;
+import com.project.eCommerce.permission.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword( passwordEncoder.encode(user.getPassword()) );
-        Role role = roleRepository.findByAuthority("SELLER");
+        Role role = roleRepository.findByAuthority("USER");
         List<Role> authority = new ArrayList<>();
         authority.add(role);
         user.setRole(authority);
