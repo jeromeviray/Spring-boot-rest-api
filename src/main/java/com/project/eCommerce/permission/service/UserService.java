@@ -12,4 +12,5 @@ public interface UserService {
     void delete(User user);
     void changePassword(String username, String password);
     boolean comparePassword(String username, String currentPassword);
+    User findByUsername(String username);
 }

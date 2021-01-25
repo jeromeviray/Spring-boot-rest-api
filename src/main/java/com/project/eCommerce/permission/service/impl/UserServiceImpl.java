@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword( passwordEncoder.encode(user.getPassword()) );
-        Role role = roleRepository.findByAuthority("USER");
+        Role role = roleRepository.findByAuthority("SELLER");
         List<Role> authority = new ArrayList<>();
         authority.add(role);
         user.setRole(authority);
@@ -65,5 +65,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean comparePassword(String username, String currentPassword) {
         return passwordEncoder.matches(currentPassword, userRepository.findByUsername(username).getPassword());
+    }
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username);
     }
 }
