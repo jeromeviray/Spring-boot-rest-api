@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "file_images")
+@Table(name = "file_image")
 public class FileImage implements Serializable {
     private static final long serialVersionUID=1L;
 
